@@ -1,0 +1,78 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Category {
+  id       Int       @id @default(autoincrement())
+  slug     String    @unique
+  nameEn   String
+  nameDe   String
+  products Product[]
+}
+
+model Product {
+  id           Int         @id @default(autoincrement())
+  slug         String      @unique
+  nameEn       String
+  nameDe       String
+  brand        String
+  model        String
+  descriptionEn String
+  descriptionDe String
+  priceEur     Decimal     @db.Decimal(10, 2)
+  priceGbp     Decimal     @db.Decimal(10, 2)
+  stock        Int         @default(0)
+  images       String[]
+  specs        Json
+  isFeatured   Boolean     @default(false)
+  isOnSale     Boolean     @default(false)
+  salePercent  Int?
+  categoryId   Int
+  category     Category    @relation(fields: [categoryId], references: [id])
+  orderItems   OrderItem[]
+  createdAt    DateTime    @default(now())
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  email       String
+  firstName   String
+  lastName    String
+  phone       String?
+  address     String
+  city        String
+  country     String
+  postalCode  String
+  currency    String      @default("EUR")
+  totalEur    Decimal     @db.Decimal(10, 2)
+  totalGbp    Decimal     @db.Decimal(10, 2)
+  status      OrderStatus @default(PENDING)
+  paymentId   String?
+  items       OrderItem[]
+  createdAt   DateTime    @default(now())
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  priceEur  Decimal @db.Decimal(10, 2)
+  priceGbp  Decimal @db.Decimal(10, 2)
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}

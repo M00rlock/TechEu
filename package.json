@@ -1,0 +1,15 @@
+{
+  "name": "e-commerce",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+    "dev:all": "concurrently --names \"BE,FE\" --prefix-colors \"blue,green\" \"npm run start:dev --prefix backend\" \"cd frontend && npm run start\"",
+    "dev:stop": "lsof -ti:3001,4200 | xargs kill -9 2>/dev/null || echo 'Nothing to stop'",
+    "build:all": "npm run build --prefix backend && npm run build --prefix frontend",
+    "test": "echo \"No tests configured\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
