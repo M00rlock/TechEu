@@ -12,5 +12,6 @@
   "contacts": { "title": "Contact Us", "email": "support@techstore.eu", "hours": "Mon–Fri, 9:00–21:00 CET", "chat": "Live Chat available on the website" },
   "faq": { "title": "FAQ", "items": [{ "q": "Do you ship to the UK?", "a": "Yes, we deliver to all UK addresses within 3–5 business days." }, { "q": "Can I return a product?", "a": "Yes, within 30 days of purchase, no questions asked." }, { "q": "What payment methods do you accept?", "a": "Stripe (card), PayPal, and bank transfer." }, { "q": "Are products covered by warranty?", "a": "All products come with manufacturer warranty (12–24 months)." }, { "q": "How do I track my order?", "a": "You will receive a tracking link via email after dispatch." }, { "q": "Can I switch currency?", "a": "Yes, use the EUR/GBP toggle in the header." }] },
   "reviews": { "title": "What Our Customers Say" },
+  "neck": { "message": "🚀 Free shipping on orders over €500 / £430 — Germany & UK" },
   "common": { "loading": "Loading...", "error": "Something went wrong", "backToHome": "Back to Home", "learnMore": "Learn More" }
 }
