@@ -2,12 +2,21 @@ import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Module, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { fallbackCategories } from '../catalog-fallback';
 
 @Injectable()
 class CategoriesService {
   constructor(private prisma: PrismaService) {}
-  findAll() {
-    return this.prisma.category.findMany({ include: { _count: { select: { products: true } } } });
+
+  async findAll() {
+    try {
+      const categories = await this.prisma.category.findMany({ include: { _count: { select: { products: true } } } });
+      if (categories.length) return categories;
+    } catch (error) {
+      console.warn('Categories database query failed. Serving fallback categories.', error);
+    }
+
+    return fallbackCategories;
   }
 }
 

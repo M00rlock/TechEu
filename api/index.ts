@@ -11,6 +11,10 @@ async function bootstrapServer() {
   if (cachedServer) return cachedServer;
 
   const server = express();
+
+  server.get('/api', (_req, res) => res.json({ ok: true, service: 'TechEu API' }));
+  server.get('/api/health', (_req, res) => res.json({ ok: true }));
+
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
     logger: process.env.NODE_ENV === 'production' ? ['error', 'warn'] : ['log', 'error', 'warn'],
   });

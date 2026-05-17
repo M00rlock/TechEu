@@ -88,3 +88,28 @@ Production frontend calls:
 ```bash
 /api
 ```
+
+## Catalog fallback mode
+
+The deployed API now includes a built-in fallback catalog with 61 products and 4 categories.
+This keeps `/catalog` visible even if the production PostgreSQL database is empty, not seeded yet, or temporarily unavailable.
+
+Useful checks after deployment:
+
+```bash
+https://YOUR_DOMAIN.vercel.app/api/health
+https://YOUR_DOMAIN.vercel.app/api/products
+https://YOUR_DOMAIN.vercel.app/api/categories
+```
+
+If `/api/products` returns `"source":"fallback"`, the site is using bundled demo catalog data.
+If it returns `"source":"database"`, the site is reading from PostgreSQL.
+
+For real production data, run migrations and seed against the same `DATABASE_URL` used in Vercel:
+
+```bash
+cd backend
+npm run db:generate
+npx prisma migrate deploy
+npm run db:seed
+```
