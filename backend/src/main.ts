@@ -6,8 +6,17 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  app.setGlobalPrefix('api');
+
+  const allowedOrigins = [
+    'http://localhost:3000',
+    'http://localhost:4200',
+    process.env.FRONTEND_URL,
+    process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined,
+  ].filter(Boolean) as string[];
+
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:4200'],
+    origin: allowedOrigins,
     credentials: true,
   });
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
@@ -19,13 +28,13 @@ async function bootstrap() {
       .setVersion('1.0')
       .build();
     const document = SwaggerModule.createDocument(app, config);
-    SwaggerModule.setup('docs', app, document);
+    SwaggerModule.setup('api/docs', app, document);
   }
 
   await app.listen(process.env.PORT || 3001);
   console.log(`🚀 Backend running on http://127.0.0.1:${process.env.PORT || 3001}`);
   if (process.env.NODE_ENV !== 'production') {
-    console.log(`📚 Swagger: http://127.0.0.1:${process.env.PORT || 3001}/docs`);
+    console.log(`📚 Swagger: http://127.0.0.1:${process.env.PORT || 3001}/api/docs`);
   }
 }
 bootstrap();

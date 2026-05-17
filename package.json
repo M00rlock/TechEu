@@ -2,14 +2,22 @@
   "name": "e-commerce",
   "version": "1.0.0",
   "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
   "scripts": {
-    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
-    "dev:all": "concurrently --names \"BE,FE\" --prefix-colors \"blue,green\" \"npm run start:dev --prefix backend\" \"cd frontend && npm run start\"",
+    "dev:all": "concurrently --names \"BE,FE\" --prefix-colors \"blue,green\" \"npm run start:dev --workspace backend\" \"npm run start --workspace frontend\"",
     "dev:stop": "lsof -ti:3001,4200 | xargs kill -9 2>/dev/null || echo 'Nothing to stop'",
-    "build:all": "npm run build --prefix backend && npm run build --prefix frontend",
+    "build:all": "npm run build --workspace backend && npm run build --workspace frontend",
+    "vercel-build": "npm run db:generate --workspace backend && npm run build --workspace frontend",
     "test": "echo \"No tests configured\""
   },
   "devDependencies": {
+    "@vercel/node": "^5.5.6",
     "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20.19.0"
   }
 }

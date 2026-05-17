@@ -10,6 +10,6 @@ export default defineConfig({
     seed: "ts-node --project tsconfig.json prisma/seed.ts",
   },
   datasource: {
-    url: "postgresql://oleksandrvasyliev@localhost:5432/ecommerce?schema=public",
+    url: process.env.DATABASE_URL ?? "postgresql://oleksandrvasyliev@localhost:5432/ecommerce?schema=public",
   },
 });
